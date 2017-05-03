@@ -5,7 +5,7 @@ let square = function square(x) {
         return x * x;
     },
     squares = R.chain(square, [1, 2, 3, 4, 5]);
-documents.getElementById('response').innerHTML = squares;
+document.getElementById('response').innerHTML = squares;
 
 },{"ramda":2}],2:[function(require,module,exports){
 module.exports = {
@@ -10349,4 +10349,5 @@ module.exports = _curry3(function zipWith(fn, a, b) {
   return rv;
 });
 
-},{"./internal/_curry3":105}]},{},[1]);
+},{"./internal/_curry3":105}]},{},[1])
+//# sourceMappingURL=bundle.js.map

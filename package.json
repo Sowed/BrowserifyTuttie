@@ -7,6 +7,7 @@
     "ramda": "^0.23.0"
   },
   "devDependencies": {
+    "mapstraction": "^1.0.1",
     "watchify": "^3.9.0"
   },
   "scripts": {
