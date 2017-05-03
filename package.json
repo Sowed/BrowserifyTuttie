@@ -13,9 +13,10 @@
     "watchify": "^3.9.0"
   },
   "scripts": {
-    "build": "watchify app.js -o bundle.js -p mapstraction --debug -v",
-    "build-min": "watchify app.js -o bundle.js -p [minifyify --map bundle.js.map --output bundle.js.map] -d -v",
+    "build": "watchify app.js -o build/bundle.js -p mapstraction --debug -v",
+    "build-min": "watchify app.js -o build/bundle.js -p [minifyify --map bundle.js.map --output build/bundle.js.map] -d -v",
     "clean": "rm -rf build/ && mkdir build/",
+    "clean-win": "rd /s /q build && mkdir build",
     "serve": "beefy app.js --live",
     "setup": "npm install && npm run clean",
     "test": "echo \"Error: no test specified\" && exit 1"
