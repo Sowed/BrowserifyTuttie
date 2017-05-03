@@ -13,7 +13,7 @@
     "watchify": "^3.9.0"
   },
   "scripts": {
-    "build": "watchify app.js -o bundle.js -p mapstraction --debug",
+    "build": "watchify app.js -o bundle.js -p mapstraction --debug -v",
     "build-min": "watchify app.js -o bundle.js -p [minifyify --map bundle.js.map --output bundle.js.map] -d -v",
     "clean": "rm -rf build/ && mkdir build/",
     "serve": "beefy app.js --live",
