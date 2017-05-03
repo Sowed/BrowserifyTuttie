@@ -9,9 +9,15 @@
   "devDependencies": {
     "beefy": "^2.1.8",
     "mapstraction": "^1.0.1",
+    "minifyify": "^7.3.5",
     "watchify": "^3.9.0"
   },
   "scripts": {
+    "build": "watchify app.js -o bundle.js -p mapstraction --debug",
+    "build-min": "watchify app.js -o bundle.js -p [minifyify --map bundle.js.map --output bundle.js.map] -d -v",
+    "clean": "rm -rf build/ && mkdir build/",
+    "serve": "beefy app.js --live",
+    "setup": "npm install && npm run clean",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,9 +26,9 @@
   },
   "keywords": [
     "Browserify",
-    "Tutorial",
-    "JavaScript",
     "Front End",
+    "JavaScript",
+    "Tutorial",
     "Webpack Alternative"
   ],
   "author": "Sowed Castelli",
