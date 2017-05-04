@@ -1,3 +1,0 @@
-npm install --save-dev beefy mapstraction minifyify
-
-npm install --save-dev babel-preset-es2015 babel-preset-react babelify browserify chalk gulp gulp-duration gulp-livereload gulp-notify gulp-rename gulp-sourcemaps gulp-util react react-dom utils-merge vinyl-buffer vinyl-source-stream watchify
