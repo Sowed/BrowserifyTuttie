@@ -7,10 +7,18 @@
     "ramda": "^0.23.0"
   },
   "devDependencies": {
+    "beefy": "^2.1.8",
     "mapstraction": "^1.0.1",
+    "minifyify": "^7.3.5",
     "watchify": "^3.9.0"
   },
   "scripts": {
+    "build": "watchify app.js -o build/bundle.js -p mapstraction --debug -v",
+    "build-min": "watchify app.js -o build/bundle.js -p [minifyify --map bundle.js.map --output build/bundle.js.map] -d -v",
+    "clean": "rm -rf build/ && mkdir build/",
+    "clean-win": "rd /s /q build && mkdir build",
+    "serve": "beefy app.js --live",
+    "setup": "npm install && npm run clean",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,12 +27,10 @@
   },
   "keywords": [
     "Browserify",
-    "Tutorial",
+    "Front End",
     "JavaScript",
-    "Front",
-    "End",
-    "Webpack",
-    "Alternative"
+    "Tutorial",
+    "Webpack Alternative"
   ],
   "author": "Sowed Castelli",
   "license": "MIT"
