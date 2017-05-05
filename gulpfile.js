@@ -14,7 +14,7 @@ const babelify = require('babelify'), //Converts ES6 & JSX to ES5
     duration = require('gulp-duration'), //Adds a time aspect to a gulp process
     gulp = require('gulp'), //The basuc gulp package
     gutil = require('gulp-util'), //Provides gulp utilities like logging and beep
-    livereload = require('gulp-livereload'), //Live reload support for the browser
+    //livereload = require('gulp-livereload'), //Live reload support for the browser
     merge = require('utils-merge'), //Object merge tool
     notify = require('gulp-notify'), //Provides notification to both console and Growel
     rename = require('gulp-rename'), //Renames source files
@@ -63,14 +63,14 @@ function bundle(bundler) {
         .pipe(gulp.dest(config.js.outputDir)) //Set the build output folder
         .pipe(notify({ message: 'Generated File: <% file.relative %>' })) //Output the file being created
         .pipe(bundleTimer) //Output time of file creation
-        .pipe(livereload()); //Reload the view in the browser
+        //.pipe(livereload()); //Reload the view in the browser
 }
 
 /**
  * A sample default gulp task for the build 
  */
 gulp.task('default', () => {
-    livereload.listen({ host: 'localhost', port: 8800, start : true}); //Start the livereload server
+    //livereload.listen({ host: 'localhost', port: 8800, start : true}); //Start the livereload server
     let args = merge(watchify.args, { debug: true }); //Merge in defualt watchify args with browserify args
 
     let bundler = browserify(config.js.src, args) //Browserify
@@ -84,7 +84,7 @@ gulp.task('default', () => {
     });
 
     //livereload.listen(); //Start the livereload server
-    console.log(livereload.server);
+    //console.log(livereload.server);
 });
 
 /**
