@@ -4,3 +4,9 @@ npm install --save-dev babel-preset-es2015 babel-preset-react babelify browserif
 
 //Remove gulp-livereload from package.json and run
 npm uninstall gulp-livereload && npm update
+
+//Add browser-sync to replace livereload
+npm i --save-dev browser-sync
+
+//Add other utilites to support gulp automated tasks
+npm install --save-dev del gulp-changed gulp-imagemin gulp-plumber gulp-uglify
