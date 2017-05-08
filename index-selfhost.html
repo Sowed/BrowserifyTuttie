@@ -4,10 +4,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Getting Cozy with Browserify</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Lato:100,400,700|Montserrat:100,200,400,500,700,900|Raleway:300,400,600,700,900|Source+Sans+Pro:300,400,700" rel="stylesheet">
     <style type="text/css" media="screen">
     body {
         font-family: 'Montserrat', sans-serif;
@@ -43,6 +39,10 @@
         height: auto;
     }
     </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Local with Browserify</title>
+    <link rel="stylesheet" href="app/css/bootstrap.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,400,700|Montserrat:100,200,400,500,700,900|Raleway:300,400,600,700,900|Source+Sans+Pro:300,400,700" rel="stylesheet">
 </head>
 
 <body>
@@ -60,7 +60,7 @@
                     <a class="nav-link" href="#">Features</a>
                 </li>
             </ul>
-            <span class="navbar-text">Test with Gulp + Browsersync</span>
+            <span class="navbar-text">Test with Gulp + Browsersync + Vendors</span>
         </div>
     </nav>
     <div class="container-fluid">
@@ -68,10 +68,10 @@
             <nav class="col-sm-3 col-lg-2 bg-faded sidebar" style="padding-top: 20px">
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Remote</a>
+                        <a class="nav-link" href="./index.html">Remote</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./index-selfhost.html">Selfhost</a>
+                        <a class="nav-link active" href="#">Selfhost</a>
                     </li>
                 </ul>
                 <ul class="nav nav-pills flex-column">
@@ -85,41 +85,10 @@
                     <div class="col-lg-10 mx-auto">
                         <section>
                             <div>
-                                <h1>Login</h1>
-                                <p class="lead">Testing with Browsersync, &amp; Gulp</p>
+                                <h1>Self Hosted</h1>
+                                <p class="lead">Working with local vendor libs</p>
                                 <small class="text-muted" id="response"></small>
                                 <hr>
-                            </div>
-                            <div class="card" style="margin-bottom: 10px">
-                                <div class="card-block">
-                                    <h2>Form Title</h2>
-                                    <p>Cute sub title</p>
-                                    <hr>
-                                    <form id="addMemberForm" action="">
-                                        <div class="container">
-                                            <div class="form-group row">
-                                                <label for="email" class="offset-md-1 col-md-2 col-form-label">Email Address</label>
-                                                <div class="col-md-9">
-                                                    <input tabindex="1" type="email" class="form-control col-md-9" id="email" name="emailAdd" placeholder="username@example.com" pattern=".+@.+." maxlength="30" title="Provide a valid Email address" required>
-                                                    <div class="form-control-feedback"></div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="password" class="offset-md-1 col-md-2 col-form-label">Password</label>
-                                                <div class="col-md-9">
-                                                    <input tabindex="2" type="password" class="form-control col-md-9" id="password" name="passWord" placeholder="password" maxlength="30" minlength="6" title="Provide a valid password" required>
-                                                    <div class="form-control-feedback"></div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="offset-md-3 col-md-9">
-                                                    <button tabindex="3" id="addNewMember" type="submit" class="btn btn-info col-6 col-lg-4">Submit
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
                             </div>
                             <div class="container" style="margin-bottom: 40px">
                                 <br/>
@@ -202,10 +171,7 @@
             </main>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
-    <script src="build/js/bundle.js"></script>
+    <script src="./public/js/build.min.js"></script>
 </body>
 
 </html>
