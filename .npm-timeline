@@ -10,3 +10,9 @@ npm i --save-dev browser-sync
 
 //Add other utilites to support gulp automated tasks
 npm install --save-dev del gulp-changed gulp-imagemin gulp-plumber gulp-uglify
+
+//Add mising gulp utils, gulp-concat gulp-newer
+npm install --save-dev gulp-concat gulp-newer
+
+//Runs a sequence of gulp tasks in the specified order.
+npm i --save-dev run-sequence
