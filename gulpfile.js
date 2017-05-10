@@ -259,7 +259,7 @@ gulp.task('bundle-js', () => {
         .pipe(uglify())
         //.pipe(rename(config.js.outputFile)) //Rename the output file from app.js, Irrelevant as source() renamed it
         .pipe(sourcemaps.write(config.js.mapDir)) //Save sourcemap to another output folder
-        .pipe(gulp.dest(onfig.js.outputDir)) //Set the build output folder
+        .pipe(gulp.dest(config.js.outputDir)) //Set the build output folder
         //.pipe(notify({ message: 'Generated File: <% file.relative %>' })) //Remove, file.relative not working
         .pipe(bundleTimer); //Output time of file creation
     //.pipe(browserSync.stream()); //Sync the browsers and livereload. 
@@ -347,7 +347,7 @@ gulp.task('vendorfree', (done) => {
  * This saves build time especially as the optimised images are not deleted
  * Most time consuming `images-newer` will ignore the already optimised images that were not deleted
  */
-gulp.task('devbundle-!clean', ['vendorfree'](done) => {
+gulp.task('devbundle-!clean', ['vendorfree'], (done) => {
     console.log('Vendor scrpits not added, use vendor scripts in view file');
     done();
 });
