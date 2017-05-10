@@ -33,7 +33,10 @@ const babelify = require('babelify'), //Converts ES6 & JSX to ES5
 //A Gulp congiguration
 let config = {
     baseDir: './',
-    indexUrl: './index.html',
+    indexUrl: { //Load start URL file for Browser-Sync server
+        default: 'index.html', //Loads an inline cdn vendor scripts, example
+        offline: 'index-selfhost.html' //Loads an all in one build.min.js with vendor scripts, example
+    },
     js: {
         src: './js/*.js', //JS files source
         app: './js/app.js', //App Entry point
@@ -92,7 +95,6 @@ gulp.src = function() {
  * Like the bundled js and optimised images if any
  */
 gulp.task('clean', () => {
-    // You can use multiple globbing patterns as you would with `gulp.src`
     return del(['build']);
 });
 
@@ -226,14 +228,14 @@ gulp.task('browserify', () => {
 /**
  * Javascript module Bundling, and Uglification, "Non moduler browserify task"
  * @note: This is an exact equivalent `browserify` task. 
- * It fixes the bug of the extracting the bundler into a seperate functions breaks the bundling 
- * as it does not return the bundler for next concatenation task
+ * It fixes the bug caused when extracting the bundler into a seperate function breaks the bundling,
+ * as it does not return the bundler output bundle.js for next concatenation task
  * ToDo: Figure out how to extract the bundle as per `browserify` task and still return the bundler for the next task
  */
 gulp.task('bundle-js', () => {
     let bundleTimer = duration('JavaScript bundle time');
     return browserify({
-            entries: './js/app.js',
+            entries: config.js.app,
             debug: true
         })
         .plugin(watchify, { ignoreWatch: ['**/node-modules/**', '**/bower_components/**'] }) //Setup watchify to watch source changes
@@ -250,29 +252,29 @@ gulp.task('bundle-js', () => {
             }
         }))
         .on('error', mapError) //Map error reporting
-        .on("error", gutil.log)
-        .pipe(source('./js/')) //.pipe(source(config.js.src)) //Set the source name/entry point
+        //.on("error", gutil.log) //Verbose alternative error handing
+        .pipe(source(config.js.outputFile))
         .pipe(buffer()) //Convert to gulp pipeline
         .pipe(sourcemaps.init({ loadMaps: true })) //Extract inline sourcemaps
         .pipe(uglify())
-        .pipe(rename('bundle.js')) //Rename the output file from app.js
-        .pipe(sourcemaps.write('maps')) //Save sourcemap to another output folder
-        .pipe(gulp.dest('./build/js/')) //Set the build output folder
-        .pipe(notify({ message: 'Generated File: <% file.relative %>' })) //Output the file being created
+        //.pipe(rename(config.js.outputFile)) //Rename the output file from app.js, Irrelevant as source() renamed it
+        .pipe(sourcemaps.write(config.js.mapDir)) //Save sourcemap to another output folder
+        .pipe(gulp.dest(onfig.js.outputDir)) //Set the build output folder
+        //.pipe(notify({ message: 'Generated File: <% file.relative %>' })) //Remove, file.relative not working
         .pipe(bundleTimer); //Output time of file creation
-    //.pipe(browserSync.stream()); //Sync the browsers and livereload
-    //makes page reload prematurely before build.min.js
+    //.pipe(browserSync.stream()); //Sync the browsers and livereload. 
+    //Removed as it makes page reload prematurely before build.min.js
 });
 
-//Gulp concatenate vendor files to browserified bundle
-gulp.task('concat-js', ['bundle-js'], () => {
+//Gulp concatenate vendor files to browserified bundle into a build vile
+gulp.task('concat-js', () => { //Removed dependence on bundle-js
     let builtJs = config.js.outputDir + config.js.outputFile;
     console.log(builtJs);
     //config.js.vendor.push(builtJs) //Add browserified build
     return gulp.src(config.js.vendor)
         .pipe(buffer())
         .pipe(sourcemaps.init({ loadMaps: true }))
-        //.pipe(changed('./build/js/build.min.js'))
+        //.pipe(changed('./build/js/build.min.js')) //muted as perfomance change was insiginifincant
         .pipe(concat(config.js.allMinJs))
         .pipe(sourcemaps.write(config.js.mapDir))
         .pipe(gulp.dest(config.js.outputDir))
@@ -285,9 +287,11 @@ gulp.task('concat-js', ['bundle-js'], () => {
  * This is intended to be a temporary solution until the release of gulp 4.0, 
  * which has support for defining task dependencies in series or in parallel. 
  * Be aware that this solution is a hack, and may stop working with a future update to gulp.
+ * @note: similar to `gulp.task('concat-js', ['bundle.js']);` that replaces `build-js` task with `concat-js` alone..
+ * Though that approach creates tight coupling of `concat-js` task to `bundle-js task`
  */
 gulp.task('build-js', (done) => {
-    runSequence('browserify', 'concat-js', () => {
+    runSequence('bundle-js', 'concat-js', () => {
         console.log('JS Files Built...');
         done();
     });
@@ -300,7 +304,7 @@ gulp.task('build-js', (done) => {
  * A quick hack is rerunning the concat-js task without cleaning the old build. That way it finds the app.js already bundled
  * NB: Created the public-js task to rerun the code, but gulp ignores repeated tasks in a single task run :-D
  * Researching on this, FIX the bug
- */
+
 //ToDo: Fix bug in build-js task
 gulp.task('public-js', (done) => {
     runSequence('build-js', () => {
@@ -309,30 +313,31 @@ gulp.task('public-js', (done) => {
         gulp.start('concat-js')
     });
 }); //Note that this is a vague hack
+ //NB: Fixed the bug with the self contained 'bundle-js' task. called the bundle as a function was the culprit
+ //To research more on a better modular fix
+ */
 
 /**
  * Task to initialize Browsersync, for browser livereloading and sync
  */
-//TODO: Update this to run after build task!
 gulp.task('browser-sync', () => {
     console.log('browser-syncing');
     browserSync.init({
         server: {
-            //baseDir: 'index-selfhost.html',
             baseDir: config.baseDir,
-            index: config.indexUrl
+            index: config.indexUrl.default
         }
     });
 });
 
 /**
- * Add a watch task, to first clean, perfome a browserify bundling, image optimisation
- *  and browsersync livereloading. Ideal approch for live/remote apps
- *  This creates a dev build (./build/), requiring inline vendor scripts
- *  as they are not added to the bundle
+ * Perfome a browserify bundling, image optimisation
+ * and browsersync livereloading. Ideal approch for live/remote apps
+ * This creates a dev bundle `bundle.js` in a build dir, requiring inline vendor scripts
+ * as they are not added to the bundle
  */
-gulp.task('devbundle', (done) => {
-    runSequence('clean', ['images-newer', 'browserify'], 'browser-sync', () => { done(); });
+gulp.task('vendorfree', (done) => {
+    runSequence(['watch-img', 'browserify'], 'browser-sync', () => { done(); });
     gulp.watch('*.html').on('change', browserSync.reload);
     gulp.watch(config.img.src, ['watch-img']);
 });
@@ -340,48 +345,52 @@ gulp.task('devbundle', (done) => {
 /**
  * Run `devbundle` without cleaning the build file. 
  * This saves build time especially as the optimised images are not deleted
- * Most time consuming `images-newer` will ignore the already optimised images
+ * Most time consuming `images-newer` will ignore the already optimised images that were not deleted
  */
-gulp.task('devbundle-!clean', (done) => {
-    runSequence(['images-newer', 'browserify'], 'browser-sync', () => { done(); });
-    gulp.watch('*.html').on('change', browserSync.reload);
-    gulp.watch(config.img.src, ['watch-img']);
+gulp.task('devbundle-!clean', ['vendorfree'](done) => {
+    console.log('Vendor scrpits not added, use vendor scripts in view file');
+    done();
+});
+/*Run `vendorfree` task after cleaning the entire build. Much faster*/
+gulp.task('devbundle', (done) => {
+    runSequence('clean', 'vendorfree', () => {
+        console.log('A clean build. Vendor scrpits not added, use vendor scripts in view file');
+        done();
+    });
 });
 
 /**
- * Add a watch task, to first clean, perfome a browserify bundling, image optimisation, scripts concatenation
- *  and browsersync livereloading. This creates a public build (./public/). The Vendor scripts are self contained
- *  Optimum for offline apps/self hosted apps.
- *  NB: `index-selfhost.html` file uses the public self contained build without inline vendor scripts
+ * Perfome a browserify bundling, image optimisation, scripts concatenation and browsersync livereloading. 
+ * This creates an all `build.min.js` script. The Vendor scripts are self contained
+ * Optimum for offline apps/self hosted apps.
+ * NB: `index-selfhost.html` file uses `build.min.js` script without inline vendor scripts
+ * @note: Split selfhost task to avoid code repeatition
+ */
+gulp.task('hosted', (done) => {
+    config.indexUrl.default = config.indexUrl.offline //Browsersync server at 'index-selfhost.html'
+    runSequence(['watch-img', 'build-js'], 'browser-sync', () => { done() });
+    gulp.watch('*.html').on('change', browserSync.reload);
+    gulp.watch(config.js.src, ['build-js']);
+});
+
+/**
+ * Run `hosted` task without first cleaning the build dir
+ */
+gulp.task('selfhost-!clean', ['hosted'], (done) => {
+    console.log('Self hosting without cleaning the build dir');
+    done();
+});
+/**
+ * First clean the build dir and then run the `hosted` task watch task
  */
 gulp.task('selfhost', (done) => {
-    config.indexUrl = 'index-selfhost.html'; //Let Browsersync load server with this file
-    runSequence('clean', ['watch-img', 'concat-js'], 'browser-sync', () => {
-        console.log('All Vendor Files are Built now');
+    runSequence('clean', 'hosted', () => {
+        console.log('Self hosting with a clean build');
         done();
     });
-    gulp.watch('*.html').on('change', browserSync.reload);
-    gulp.watch(config.js.src, ['concat-js']);
 });
 
 /**
- * Rerun the `selfhost` task without first cleaning the build and public directories
- * NB: The ./public `build.min.js` doesnt capture `bundle.js` pipe this task twice.
- * ToDo: Yet to fix `concat-js` - `browserify` task sequency
+ * Run the `selfhost` as the task default
  */
-gulp.task('selfhost-!clean', (done) => {
-    config.indexUrl = 'index-selfhost.html'; //Let Browsersync load server with this file
-    runSequence(['watch-img', 'public-js'], 'browser-sync', () => {
-        console.log('All Vendor Files are Built now');
-        done();
-    });
-    gulp.watch('*.html').on('change', browserSync.reload);
-    gulp.watch(config.js.src, ['public-js']);
-});
-
-/**
- * Run the selfhost task by default from `browserify`
- * Resulting into missing `app.js` logic. Quick hack is running 
- */
-//ToDo: Fix the `build-js` - `concat-js` - `browserify` task sequency 
 gulp.task('default', ['selfhost']);
