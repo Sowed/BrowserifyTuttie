@@ -1,3 +1,7 @@
+/*!
+ * Main module. Uses the `ramda` package as an example to be used with browserify
+ */
+
 "use strict";
 let R = require('ramda'),
     square = function square(x) {
