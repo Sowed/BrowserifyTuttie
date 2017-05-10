@@ -107,7 +107,7 @@ gulp.task('clean', () => {
  * The newer plugin is configured with the directory path for minified images.
  */
 //================================================================================================
-gulp.task('images-newer', () => {
+gulp.task('imagemin', () => {
     return gulp.src(config.img.src)
         .pipe(newer(config.img.dst))        
         //Alternative: .pipe(changed(config.img.dst))
@@ -119,9 +119,9 @@ gulp.task('images-newer', () => {
         ], { verbose: true }))
         .pipe(gulp.dest(config.img.dst));
 });
-gulp.task('watch-img', ['images-newer'], () => {
+gulp.task('watch-img', ['imagemin'], () => {
     //Watch the image directory and optimise any new images
-    gulp.watch(config.img.src, ['images-newer']);
+    gulp.watch(config.img.src, ['imagemin']);
 });
 
 /**
@@ -265,7 +265,7 @@ gulp.task('vendorfree', (done) => {
 /**
  * Run `devbundle` without cleaning the build file. 
  * This saves build time especially as the optimised images are not deleted
- * Most time consuming `images-newer` will ignore the already optimised images that were not deleted
+ * Most time consuming `imagemin` task will ignore the already optimised images that were not deleted
  */
 gulp.task('devbundle-!clean', ['vendorfree'], (done) => {
     console.log('Vendor scrpits not added, use vendor scripts in view file');
