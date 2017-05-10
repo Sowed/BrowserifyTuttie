@@ -100,21 +100,6 @@ gulp.task('clean', () => {
 
 /**
  * Task to Minify and Optimise images
- */
-gulp.task('imagemin', () => {
-    return gulp.src(config.img.src)
-        .pipe(changed(config.img.dst))
-        //Alternative -> .pipe(newer(config.img.dst))
-        .pipe(imagemin([
-            imagemin.gifsicle({ interlaced: true }),
-            imagemin.jpegtran({ progressive: true }),
-            imagemin.optipng({ optimizationLevel: 5 }),
-            imagemin.svgo({ plugins: [{ removeViewBox: true }] })
-        ], { verbose: true }))
-        .pipe(gulp.dest(config.img.dst));
-});
-
-/**
  * Alternatively using an gulp-newer instead of gulp-changed
  * @ref https://github.com/tschaub/gulp-newer
  * A Gulp plugin for passing through only those source files that are newer than corresponding destination files.
@@ -126,9 +111,9 @@ gulp.task('imagemin', () => {
 //================================================================================================
 // Minify any new images
 gulp.task('images-newer', () => {
-    // Add the newer pipe to pass through newer images only
     return gulp.src(config.img.src)
-        .pipe(newer(config.img.dst)) //Testing alternative to changed()
+        .pipe(newer(config.img.dst))        
+        //Alternative: .pipe(changed(config.img.dst))
         .pipe(imagemin([
             imagemin.gifsicle({ interlaced: true }),
             imagemin.jpegtran({ progressive: true }),
