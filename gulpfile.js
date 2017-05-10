@@ -99,17 +99,14 @@ gulp.task('clean', () => {
 });
 
 /**
- * Task to Minify and Optimise images
- * Alternatively using an gulp-newer instead of gulp-changed
+ * Task to Minify and Optimise images. Alternatively using an gulp-newer instead of gulp-changed
  * @ref https://github.com/tschaub/gulp-newer
  * A Gulp plugin for passing through only those source files that are newer than corresponding destination files.
- * Using newer with 1:1 source:dest mappings. 
- * The default task(default-ex0) in the example-0 below sets up a watch that minifies images on changes. 
- * Piping the source files to newer before imagemin ensures that only those images that have 
- * changed are minified. The newer plugin is configured with the directory path for minified images.
+ * Using newer with 1:1 source:dest mappings. Piping the source files to newer before imagemin ensures 
+ * that only those images that have changed are minified. 
+ * The newer plugin is configured with the directory path for minified images.
  */
 //================================================================================================
-// Minify any new images
 gulp.task('images-newer', () => {
     return gulp.src(config.img.src)
         .pipe(newer(config.img.dst))        
@@ -125,23 +122,6 @@ gulp.task('images-newer', () => {
 gulp.task('watch-img', ['images-newer'], () => {
     //Watch the image directory and optimise any new images
     gulp.watch(config.img.src, ['images-newer']);
-});
-
-/**
- * Using newer with many:1 source:dest mappings
- * Plugins like gulp-concat take many source files and generate a single destination file. 
- * In this case, the newer stream will pass through all source files if any one of them 
- * is newer than the destination file. The newer plugin is configured with the destination file path.
- */
-//================================================================================================
-// Example task: Process the JS and return a stream, Concatenate all if any are newer
-gulp.task('js-newer', () => {
-    return gulp.src(config.js.src)
-        .pipe(sourcemaps.init())
-        .pipe(newer(config.js.outputDir))
-        .pipe(concat(config.js.outputFile))
-        .pipe(sourcemaps.write(config.js.mapDir))
-        .pipe(gulp.dest(config.js.outputDir));
 });
 
 /**
