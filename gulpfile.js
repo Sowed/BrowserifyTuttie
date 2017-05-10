@@ -231,7 +231,7 @@ gulp.task('concat-js', () => { //Removed dependence on bundle-js
  * This is intended to be a temporary solution until the release of gulp 4.0, 
  * which has support for defining task dependencies in series or in parallel. 
  * Be aware that this solution is a hack, and may stop working with a future update to gulp.
- * @note: similar to `gulp.task('concat-js', ['bundle.js']);` that replaces `build-js` task with `concat-js` alone..
+ * @note: similar to `gulp.task('concat-js', ['bundle.js']);` that replaces `build-js` task with `concat-js` alone.
  * Though that approach creates tight coupling of `concat-js` task to `bundle-js task`
  */
 gulp.task('build-js', (done) => {
@@ -241,29 +241,6 @@ gulp.task('build-js', (done) => {
     });
 });
 
-/*!
- * Note that the `build-js task` has a bug...for some reason the `concat-js` task finishes before the `browserify` even if it shouldn't
- * JS files are concatenated before browserify has completed creating the build file bundle.js. 
- * This results to no `app.js` code in the final ./public/build.min.js.
- * A quick hack is rerunning the concat-js task without cleaning the old build. That way it finds the app.js already bundled
- * NB: Created the public-js task to rerun the code, but gulp ignores repeated tasks in a single task run :-D
- * Researching on this, FIX the bug
-
-//ToDo: Fix bug in build-js task
-gulp.task('public-js', (done) => {
-    runSequence('build-js', () => {
-        done();
-        console.log('Rerun concatenation with assured built bundle.js...');
-        gulp.start('concat-js')
-    });
-}); //Note that this is a vague hack
- //NB: Fixed the bug with the self contained 'bundle-js' task. called the bundle as a function was the culprit
- //To research more on a better modular fix
- */
-
-/**
- * Task to initialize Browsersync, for browser livereloading and sync
- */
 gulp.task('browser-sync', () => {
     console.log('browser-syncing');
     browserSync.init({
@@ -275,10 +252,9 @@ gulp.task('browser-sync', () => {
 });
 
 /**
- * Perfome a browserify bundling, image optimisation
- * and browsersync livereloading. Ideal approch for live/remote apps
- * This creates a dev bundle `bundle.js` in a build dir, requiring inline vendor scripts
- * as they are not added to the bundle
+ * Perfome a browserify bundling, image optimisation and browsersync livereloading. 
+ * Ideal approch for live/remote apps. This creates a dev bundle `bundle.js` in a build dir, 
+ * requiring inline vendor scripts as they are not added to the bundle
  */
 gulp.task('vendorfree', (done) => {
     runSequence(['watch-img', 'browserify'], 'browser-sync', () => { done(); });
@@ -295,7 +271,7 @@ gulp.task('devbundle-!clean', ['vendorfree'], (done) => {
     console.log('Vendor scrpits not added, use vendor scripts in view file');
     done();
 });
-/*Run `vendorfree` task after cleaning the entire build. Much faster*/
+/* Run `vendorfree` task after cleaning the entire build. Much faster*/
 gulp.task('devbundle', (done) => {
     runSequence('clean', 'vendorfree', () => {
         console.log('A clean build. Vendor scrpits not added, use vendor scripts in view file');
@@ -308,7 +284,6 @@ gulp.task('devbundle', (done) => {
  * This creates an all `build.min.js` script. The Vendor scripts are self contained
  * Optimum for offline apps/self hosted apps.
  * NB: `index-selfhost.html` file uses `build.min.js` script without inline vendor scripts
- * @note: Split selfhost task to avoid code repeatition
  */
 gulp.task('hosted', (done) => {
     config.indexUrl.default = config.indexUrl.offline //Browsersync server at 'index-selfhost.html'
@@ -317,16 +292,12 @@ gulp.task('hosted', (done) => {
     gulp.watch(config.js.src, ['build-js']);
 });
 
-/**
- * Run `hosted` task without first cleaning the build dir
- */
+/** Run `hosted` task without first cleaning the build dir */
 gulp.task('selfhost-!clean', ['hosted'], (done) => {
     console.log('Self hosting without cleaning the build dir');
     done();
 });
-/**
- * First clean the build dir and then run the `hosted` task watch task
- */
+/** First clean the build dir and then run the `hosted` task watch task */
 gulp.task('selfhost', (done) => {
     runSequence('clean', 'hosted', () => {
         console.log('Self hosting with a clean build');
