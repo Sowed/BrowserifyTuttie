@@ -39,7 +39,7 @@ let config = {
     },
     js: {
         src: './js/*.js', //JS files source
-        app: './js/app.js', //App Entry point
+        app: './app/js/app.js', //App Entry point
         watch: './js/**/*', //Watch all Javascript Files
         dist: './dist/js/', //Directory to save bundles
         mapDir: 'maps/', //Sub Dir to save sourcemaps to
