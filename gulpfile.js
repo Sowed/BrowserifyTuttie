@@ -153,27 +153,6 @@ function browserifyBundle(bundler) {
 }
 
 /**
- * Another example of a reusable bundle
- */
-function bundle(bundler) {
-    let bundleTimer = duration('JavaScript bundle time');
-
-    //Add options to add 'base' bundler added as a parameter
-    bundler
-        .bundle() //Start the bundle
-        .on('error', mapError) //Map error reporting
-        .pipe(source(config.js.src)) //Set the source name/entry point
-        .pipe(buffer()) //Convert to gulp pipeline
-        .pipe(sourcemaps.init({ loadMaps: true })) //Extract inline sourcemaps
-        .pipe(rename(config.js.outputFile)) //Rename the output file from app.js
-        .pipe(sourcemaps.write(config.js.mapDir)) //Save sourcemap to another output folder
-        .pipe(gulp.dest(config.js.outputDir)) //Set the build output folder
-        .pipe(notify({ message: 'Generated File: <% file.relative %>' })) //Output the file being created
-        .pipe(bundleTimer) //Output time of file creation
-        .pipe(browserSync.stream()); //Sync the browsers and livereload
-}
-
-/**
  * Javascript module Bundling, and Uglification, note that this uses our first bundle `browserifyBundle()`
  */
 gulp.task('browserify', () => {
