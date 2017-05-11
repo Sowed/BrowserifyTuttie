@@ -27,3 +27,7 @@ npm i --save-dev run-sequence
 
 //Add a UNIX command rm -rf for node with rimraf, and a CLI mode for imagemin
 npm install --save-dev rimraf imagemin-cli
+
+//------------------------Remove Gulp tasks------------
+//Uninstall all the dependencies specifically used by the gulp task
+npm uninstall --save-dev babel-preset-es2015 babel-preset-react babelify chalk gulp gulp-duration gulp-livereload gulp-notify gulp-rename gulp-sourcemaps gulp-util react react-dom utils-merge vinyl-buffer vinyl-source-stream browser-sync del gulp-changed gulp-imagemin gulp-plumber gulp-uglify gulp-concat gulp-newer run-sequence
