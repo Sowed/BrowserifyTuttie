@@ -14,8 +14,7 @@ Note that:
 
 ## npm scripts
 ---
-
-You can create your custom script to perform command line utils. Add a new entry within the script object of package.json and call them with `npm run scriptname`. They are placed in the scripts body of [package.json](package.json).
+You can create your custom script to perform command line utils. Add a new entry within the script object of package.json and call them with `npm run scriptname`. They are placed in the [scripts](https://github.com/Sowed/BrowserifyTuttie/blob/9a16c8e18af63805358f4326fb0d4355f39933db/package.json#L42) body of [package.json](package.json).
 
 Examples:
 
@@ -61,7 +60,6 @@ This is equivalent to `npm run start`. Npm has some predefined run script pointe
 
 # gulp tasks
 ---
-
 Npm scripts are very useful for automating development, tests, and production tasks but with the complexity of the build process the tasks can easily get out of hand. Enter Gulp tasks, much more like npm scripts on steroids. Within the [gulpfile.js](gulpfile.js) are tasks that accomplish fucntionlity that the above npm scripts addressed. Since this file is a javascript file, it allows room for more task manipulation login unlike the limiting JSON bottleneck with npm scripts.
 Gulp tasks are run by `gulp taskname` and if the task is not found within the gulpfile, gulp will throw an error.
 * Example 1
@@ -104,26 +102,28 @@ gulp selfhost
 ```
 
 ### List of the gulp tasks
-* clean
-* imagemin
-* watch-img
-* browserify
-* bundle-js
-* concat-js
-* build-js
-* vendorfree
-* devbundle-!clean
-* devbundle
-* hosted
-* selfhost-!clean
-* selfhost
-* default
+* [clean](https://github.com/Sowed/BrowserifyTuttie/blob/9a16c8e18af63805358f4326fb0d4355f39933db/gulpfile.js#L97)
+* [imagemin](https://github.com/Sowed/BrowserifyTuttie/blob/9a16c8e18af63805358f4326fb0d4355f39933db/gulpfile.js#L110)
+* [watch-img](https://github.com/Sowed/BrowserifyTuttie/blob/9a16c8e18af63805358f4326fb0d4355f39933db/gulpfile.js#L122)
+* [browserify](https://github.com/Sowed/BrowserifyTuttie/blob/9a16c8e18af63805358f4326fb0d4355f39933db/gulpfile.js#L158)
+* [bundle-js](https://github.com/Sowed/BrowserifyTuttie/blob/9a16c8e18af63805358f4326fb0d4355f39933db/gulpfile.js#L179)
+* [concat-js](https://github.com/Sowed/BrowserifyTuttie/blob/9a16c8e18af63805358f4326fb0d4355f39933db/gulpfile.js#L214)
+* [build-js](https://github.com/Sowed/BrowserifyTuttie/blob/9a16c8e18af63805358f4326fb0d4355f39933db/gulpfile.js#L237)
+* [browser-sync](https://github.com/Sowed/BrowserifyTuttie/blob/9a16c8e18af63805358f4326fb0d4355f39933db/gulpfile.js#L244)
+* [vendorfree](https://github.com/Sowed/BrowserifyTuttie/blob/9a16c8e18af63805358f4326fb0d4355f39933db/gulpfile.js#L259)
+* [devbundle-!clean](https://github.com/Sowed/BrowserifyTuttie/blob/9a16c8e18af63805358f4326fb0d4355f39933db/gulpfile.js#L270)
+* [devbundle](https://github.com/Sowed/BrowserifyTuttie/blob/9a16c8e18af63805358f4326fb0d4355f39933db/gulpfile.js#L275)
+* [hosted](https://github.com/Sowed/BrowserifyTuttie/blob/9a16c8e18af63805358f4326fb0d4355f39933db/gulpfile.js#L288)
+* [selfhost-!clean](https://github.com/Sowed/BrowserifyTuttie/blob/9a16c8e18af63805358f4326fb0d4355f39933db/gulpfile.js#L296)
+* [selfhost](https://github.com/Sowed/BrowserifyTuttie/blob/9a16c8e18af63805358f4326fb0d4355f39933db/gulpfile.js#L301)
+* [default](https://github.com/Sowed/BrowserifyTuttie/blob/9a16c8e18af63805358f4326fb0d4355f39933db/gulpfile.js#L311)
 
 >NOTE
-Since the gulpfile.js supports inline comments, the tasks have been briefly annotated to explain the simple logic.
+* Since the gulpfile.js supports inline comments, the tasks have been briefly annotated to explain the simple logic.
+* The `default` task is the one that gets called when you run `gulp` without specifying any other args
 
 ## Notes
-The [.npm_timeline](.npm_timeline) is just a side notebook documentation npm commands that were used along to give you a general idea of the installation of the npm scripts along the way.
+The [.npm-timeline](.npm-timeline) is just a side notebook documentation npm commands that were used along to give you a general idea of the installation of the npm scripts along the way.
 Reference has been made to some good reads in the comment section of some tasks
 
 ### Prerequisites
