@@ -1,7 +1,7 @@
 {
   "name": "browserifytuttie",
   "version": "1.0.0",
-  "description": "A simple test out with browserify",
+  "description": "Just another sample nimbler Browserify and npm scripts setup with examples",
   "main": "app.js",
   "dependencies": {
     "ramda": "^0.23.0"
