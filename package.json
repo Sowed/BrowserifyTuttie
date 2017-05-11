@@ -27,10 +27,12 @@
     "gulp-sourcemaps": "^2.6.0",
     "gulp-uglify": "^2.1.2",
     "gulp-util": "^3.0.8",
+    "imagemin-cli": "^3.0.0",
     "mapstraction": "^1.0.1",
     "minifyify": "^7.3.5",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "rimraf": "^2.6.1",
     "run-sequence": "^1.2.2",
     "utils-merge": "^1.0.0",
     "vinyl-buffer": "^1.0.0",
@@ -38,12 +40,18 @@
     "watchify": "^3.9.0"
   },
   "scripts": {
-    "build": "watchify js/app.js -o build/bundle.js -p mapstraction --debug -v",
-    "build-min": "watchify js/app.js -o build/bundle.js -p [minifyify --map bundle.js.map --output build/bundle.js.map] -d -v",
-    "clean": "rm -rf build/ && mkdir build/",
-    "clean-win": "rd /s /q build && mkdir build",
-    "serve": "beefy js/app.js --live",
-    "setup": "npm install && npm run clean",
+    "build": "watchify app/js/app.js -o build/js/bundle.js -p mapstraction --debug -v",
+    "build:min": "watchify app/js/app.js -o build/js/bundle.js -p [minifyify --map bundle.js.map --output build/js/bundle.js.map] -d -v",
+    "bundle": "browserify app/js/app.js -o \"build/js/bundle.js\" -p mapstraction --debug -v",
+    "clean": "npm run rm:build && mkdir \"build/js\"",
+    "clean:js": "npm run rm:js && mkdir \"build/js\"",
+    "clean:watch": "npm run clean && npm run imagemin && npm run build",
+    "imagemin": "imagemin app/images/* --out-dir=build/img",
+    "rm:build": "rimraf build",
+    "rm:js": "rimraf build/js",
+    "serve": "beefy app/js/app.js 8000 --live --open",
+    "setup": "npm install && npm run clean && npm run imagemin",
+    "start": "npm run bundle &&  npm run serve",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -51,11 +59,12 @@
     "url": "https://github.com/sowed/browserifytuttie"
   },
   "keywords": [
-    "Browserify",
-    "Front End",
-    "JavaScript",
-    "Tutorial",
-    "Webpack Alternative"
+    "browserify",
+    "npm scripts",
+    "gulp",
+    "imagemin", "watchify", "uglify", "sourcemaps", "babel", "beefy", "browser-sync",
+    "Webpack Alternative",
+    "Tutorial"
   ],
   "author": "Sowed Castelli",
   "license": "MIT"
