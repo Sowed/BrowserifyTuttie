@@ -39,7 +39,7 @@ let config = {
     },
     js: {
         src: './js/*.js', //JS files source
-        app: './js/app.js', //App Entry point
+        app: './app/js/app.js', //App Entry point
         watch: './js/**/*', //Watch all Javascript Files
         dist: './dist/js/', //Directory to save bundles
         mapDir: 'maps/', //Sub Dir to save sourcemaps to
@@ -99,36 +99,18 @@ gulp.task('clean', () => {
 });
 
 /**
- * Task to Minify and Optimise images
- */
-gulp.task('imagemin', () => {
-    return gulp.src(config.img.src)
-        .pipe(changed(config.img.dst))
-        //Alternative -> .pipe(newer(config.img.dst))
-        .pipe(imagemin([
-            imagemin.gifsicle({ interlaced: true }),
-            imagemin.jpegtran({ progressive: true }),
-            imagemin.optipng({ optimizationLevel: 5 }),
-            imagemin.svgo({ plugins: [{ removeViewBox: true }] })
-        ], { verbose: true }))
-        .pipe(gulp.dest(config.img.dst));
-});
-
-/**
- * Alternatively using an gulp-newer instead of gulp-changed
+ * Task to Minify and Optimise images. Alternatively using an gulp-newer instead of gulp-changed
  * @ref https://github.com/tschaub/gulp-newer
  * A Gulp plugin for passing through only those source files that are newer than corresponding destination files.
- * Using newer with 1:1 source:dest mappings. 
- * The default task(default-ex0) in the example-0 below sets up a watch that minifies images on changes. 
- * Piping the source files to newer before imagemin ensures that only those images that have 
- * changed are minified. The newer plugin is configured with the directory path for minified images.
+ * Using newer with 1:1 source:dest mappings. Piping the source files to newer before imagemin ensures 
+ * that only those images that have changed are minified. 
+ * The newer plugin is configured with the directory path for minified images.
  */
 //================================================================================================
-// Minify any new images
-gulp.task('images-newer', () => {
-    // Add the newer pipe to pass through newer images only
+gulp.task('imagemin', () => {
     return gulp.src(config.img.src)
-        .pipe(newer(config.img.dst)) //Testing alternative to changed()
+        .pipe(newer(config.img.dst))        
+        //Alternative: .pipe(changed(config.img.dst))
         .pipe(imagemin([
             imagemin.gifsicle({ interlaced: true }),
             imagemin.jpegtran({ progressive: true }),
@@ -137,26 +119,9 @@ gulp.task('images-newer', () => {
         ], { verbose: true }))
         .pipe(gulp.dest(config.img.dst));
 });
-gulp.task('watch-img', ['images-newer'], () => {
+gulp.task('watch-img', ['imagemin'], () => {
     //Watch the image directory and optimise any new images
-    gulp.watch(config.img.src, ['images-newer']);
-});
-
-/**
- * Using newer with many:1 source:dest mappings
- * Plugins like gulp-concat take many source files and generate a single destination file. 
- * In this case, the newer stream will pass through all source files if any one of them 
- * is newer than the destination file. The newer plugin is configured with the destination file path.
- */
-//================================================================================================
-// Example task: Process the JS and return a stream, Concatenate all if any are newer
-gulp.task('js-newer', () => {
-    return gulp.src(config.js.src)
-        .pipe(sourcemaps.init())
-        .pipe(newer(config.js.outputDir))
-        .pipe(concat(config.js.outputFile))
-        .pipe(sourcemaps.write(config.js.mapDir))
-        .pipe(gulp.dest(config.js.outputDir));
+    gulp.watch(config.img.src, ['imagemin']);
 });
 
 /**
@@ -185,27 +150,6 @@ function browserifyBundle(bundler) {
         .pipe(gulp.dest(config.js.outputDir))
         .pipe(bundleTime)
         .pipe(browserSync.stream());
-}
-
-/**
- * Another example of a reusable bundle
- */
-function bundle(bundler) {
-    let bundleTimer = duration('JavaScript bundle time');
-
-    //Add options to add 'base' bundler added as a parameter
-    bundler
-        .bundle() //Start the bundle
-        .on('error', mapError) //Map error reporting
-        .pipe(source(config.js.src)) //Set the source name/entry point
-        .pipe(buffer()) //Convert to gulp pipeline
-        .pipe(sourcemaps.init({ loadMaps: true })) //Extract inline sourcemaps
-        .pipe(rename(config.js.outputFile)) //Rename the output file from app.js
-        .pipe(sourcemaps.write(config.js.mapDir)) //Save sourcemap to another output folder
-        .pipe(gulp.dest(config.js.outputDir)) //Set the build output folder
-        .pipe(notify({ message: 'Generated File: <% file.relative %>' })) //Output the file being created
-        .pipe(bundleTimer) //Output time of file creation
-        .pipe(browserSync.stream()); //Sync the browsers and livereload
 }
 
 /**
@@ -287,7 +231,7 @@ gulp.task('concat-js', () => { //Removed dependence on bundle-js
  * This is intended to be a temporary solution until the release of gulp 4.0, 
  * which has support for defining task dependencies in series or in parallel. 
  * Be aware that this solution is a hack, and may stop working with a future update to gulp.
- * @note: similar to `gulp.task('concat-js', ['bundle.js']);` that replaces `build-js` task with `concat-js` alone..
+ * @note: similar to `gulp.task('concat-js', ['bundle.js']);` that replaces `build-js` task with `concat-js` alone.
  * Though that approach creates tight coupling of `concat-js` task to `bundle-js task`
  */
 gulp.task('build-js', (done) => {
@@ -297,29 +241,6 @@ gulp.task('build-js', (done) => {
     });
 });
 
-/*!
- * Note that the `build-js task` has a bug...for some reason the `concat-js` task finishes before the `browserify` even if it shouldn't
- * JS files are concatenated before browserify has completed creating the build file bundle.js. 
- * This results to no `app.js` code in the final ./public/build.min.js.
- * A quick hack is rerunning the concat-js task without cleaning the old build. That way it finds the app.js already bundled
- * NB: Created the public-js task to rerun the code, but gulp ignores repeated tasks in a single task run :-D
- * Researching on this, FIX the bug
-
-//ToDo: Fix bug in build-js task
-gulp.task('public-js', (done) => {
-    runSequence('build-js', () => {
-        done();
-        console.log('Rerun concatenation with assured built bundle.js...');
-        gulp.start('concat-js')
-    });
-}); //Note that this is a vague hack
- //NB: Fixed the bug with the self contained 'bundle-js' task. called the bundle as a function was the culprit
- //To research more on a better modular fix
- */
-
-/**
- * Task to initialize Browsersync, for browser livereloading and sync
- */
 gulp.task('browser-sync', () => {
     console.log('browser-syncing');
     browserSync.init({
@@ -331,10 +252,9 @@ gulp.task('browser-sync', () => {
 });
 
 /**
- * Perfome a browserify bundling, image optimisation
- * and browsersync livereloading. Ideal approch for live/remote apps
- * This creates a dev bundle `bundle.js` in a build dir, requiring inline vendor scripts
- * as they are not added to the bundle
+ * Perfome a browserify bundling, image optimisation and browsersync livereloading. 
+ * Ideal approch for live/remote apps. This creates a dev bundle `bundle.js` in a build dir, 
+ * requiring inline vendor scripts as they are not added to the bundle
  */
 gulp.task('vendorfree', (done) => {
     runSequence(['watch-img', 'browserify'], 'browser-sync', () => { done(); });
@@ -345,13 +265,13 @@ gulp.task('vendorfree', (done) => {
 /**
  * Run `devbundle` without cleaning the build file. 
  * This saves build time especially as the optimised images are not deleted
- * Most time consuming `images-newer` will ignore the already optimised images that were not deleted
+ * Most time consuming `imagemin` task will ignore the already optimised images that were not deleted
  */
 gulp.task('devbundle-!clean', ['vendorfree'], (done) => {
     console.log('Vendor scrpits not added, use vendor scripts in view file');
     done();
 });
-/*Run `vendorfree` task after cleaning the entire build. Much faster*/
+/* Run `vendorfree` task after cleaning the entire build. Much faster*/
 gulp.task('devbundle', (done) => {
     runSequence('clean', 'vendorfree', () => {
         console.log('A clean build. Vendor scrpits not added, use vendor scripts in view file');
@@ -364,7 +284,6 @@ gulp.task('devbundle', (done) => {
  * This creates an all `build.min.js` script. The Vendor scripts are self contained
  * Optimum for offline apps/self hosted apps.
  * NB: `index-selfhost.html` file uses `build.min.js` script without inline vendor scripts
- * @note: Split selfhost task to avoid code repeatition
  */
 gulp.task('hosted', (done) => {
     config.indexUrl.default = config.indexUrl.offline //Browsersync server at 'index-selfhost.html'
@@ -373,16 +292,12 @@ gulp.task('hosted', (done) => {
     gulp.watch(config.js.src, ['build-js']);
 });
 
-/**
- * Run `hosted` task without first cleaning the build dir
- */
+/** Run `hosted` task without first cleaning the build dir */
 gulp.task('selfhost-!clean', ['hosted'], (done) => {
     console.log('Self hosting without cleaning the build dir');
     done();
 });
-/**
- * First clean the build dir and then run the `hosted` task watch task
- */
+/** First clean the build dir and then run the `hosted` task watch task */
 gulp.task('selfhost', (done) => {
     runSequence('clean', 'hosted', () => {
         console.log('Self hosting with a clean build');
