@@ -1,6 +1,14 @@
-npm install --save-dev beefy mapstraction minifyify
+//Create project structure Initialize with npm ang git
+mkdir browserifytuttie && cd browserifytuttie && npm init && git init
 
+//Add the npm ramda package
+npm install --save ramda && npm i
+
+//Install project dev dependencies
 npm install --save-dev babel-preset-es2015 babel-preset-react babelify browserify chalk gulp gulp-duration gulp-livereload gulp-notify gulp-rename gulp-sourcemaps gulp-util react react-dom utils-merge vinyl-buffer vinyl-source-stream watchify
+
+//Add the beefy server, source maps extractor and source code uglifier 
+npm install --save-dev beefy mapstraction minifyify
 
 //Remove gulp-livereload from package.json and run
 npm uninstall gulp-livereload && npm update
@@ -16,3 +24,6 @@ npm install --save-dev gulp-concat gulp-newer
 
 //Runs a sequence of gulp tasks in the specified order.
 npm i --save-dev run-sequence
+
+//Add a UNIX command rm -rf for node with rimraf, and a CLI mode for imagemin
+npm install --save-dev rimraf imagemin-cli

@@ -4,53 +4,19 @@
 
 <head>
     <meta charset="UTF-8">
-    <style type="text/css" media="screen">
-    body {
-        font-family: 'Montserrat', sans-serif;
-        font-family: 'Lato', sans-serif;
-        font-family: 'Raleway', sans-serif;
-        font-family: 'Source Sans Pro', sans-serif;
-    }
-    
-    p,
-    li,
-    a {
-        font-family: 'Sofia Pro Light', Montserrat, sans-serif;
-        font-weight: 400;
-    }
-    
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        font-family: 'Brandon Grotesque Light', Lato, sans-serif;
-    }
-    
-    h1 {
-        font-weight: 100;
-        font-size: 72px;
-    }
-    
-    img {
-        display: block;
-        width: 100%;
-        height: auto;
-    }
-    </style>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Local with Browserify</title>
-    <link rel="stylesheet" href="app/css/bootstrap.css">
-    <link href="https://fonts.googleapis.com/css?family=Lato:100,400,700|Montserrat:100,200,400,500,700,900|Raleway:300,400,600,700,900|Source+Sans+Pro:300,400,700" rel="stylesheet">
+    <title>Getting Cozy with Browserify</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,400|Montserrat:100,200,400,500,700,900" rel="stylesheet">
+    <link rel="stylesheet" href="./app/css/bootstrap.css">
+    <link rel="stylesheet" href="./app/css/app.css">
 </head>
 
 <body>
-    <nav class="navbar navbar-toggleable-md navbar-inverse" style="font-family: Montserrat, Lato, sans-serif; font-size: 10px; background-color: #555; border-bottom: solid 1px #aaa;">
+    <nav class="navbar navbar-toggleable navbar-inverse app-nav">
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="#" style="font-size: 12px">BrowserifyTuttie</a>
+        <a class="navbar-brand" href="#">BrowserifyTuttie</a>
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
@@ -74,100 +40,105 @@
                         <a class="nav-link active" href="#">Selfhost</a>
                     </li>
                 </ul>
-                <ul class="nav nav-pills flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Navs</a>
-                    </li>
-                </ul>
             </nav>
-            <main class="col-sm-9 col-lg-10" style="padding-top: 20px">
-                <div class="container">
-                    <div class="col-lg-10 mx-auto">
-                        <section>
-                            <div>
-                                <h1>Self Hosted</h1>
-                                <p class="lead">Working with local vendor libs</p>
-                                <small class="text-muted" id="response"></small>
-                                <hr>
-                            </div>
-                            <div class="container" style="margin-bottom: 40px">
-                                <br/>
-                                <h3>Image Optimisation with <code>gulp-imagemin</code></h3>
-                                <hr/>
-                                <div class="row">
-                                    <div class="card col-6">
-                                        <img class="card-img-top" src="app/images/ball.png" alt="Card image cap">
-                                        <div class="card-block">
-                                            <h4 class="card-title">Original</h4>
-                                            <p class="card-text">PNG: This Ball has not been minified</p>
-                                            <p class="card-text">
-                                                <small class="text-muted">Its about 204KB</small>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="card col-6">
-                                        <img class="card-img-top" src="build/img/ball.png" alt="Card image cap">
-                                        <div class="card-block">
-                                            <h4 class="card-title">Minified</h4>
-                                            <p class="card-text">This Ball has been minified</p>
-                                            <p class="card-text">
-                                                <small class="text-muted" id="response">175KB (saved 29.3 kB - 14%)</small>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="container" style="margin-bottom: 40px">
-                                <div class="row">
-                                    <div class="card col-6">
-                                        <img class="card-img-top" src="app/images/img.svg" alt="Card image cap">
-                                        <div class="card-block">
-                                            <h4 class="card-title">Original</h4>
-                                            <p class="card-text">SVG: Untouched SVG with Text</p>
-                                            <p class="card-text">
-                                                <small class="text-muted" id="response">About 529 bytes</small>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="card col-6">
-                                        <img class="card-img-top" src="build/img/img.svg" alt="Card image cap">
-                                        <div class="card-block">
-                                            <h4 class="card-title">Minified</h4>
-                                            <p class="card-text">Imagemin removes some xml markup</p>
-                                            <p class="card-text">
-                                                <small class="text-muted" id="response">370 bytes (saved 159 B - 30.1%)</small>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="container" style="margin-bottom: 40px">
-                                <div class="row">
-                                    <div class="card col-6">
-                                        <img class="card-img-top" src="app/images/placeholder.svg" alt="Card image cap">
-                                        <div class="card-block">
-                                            <h4 class="card-title">Original</h4>
-                                            <p class="card-text">SVG: Untouched SVG with more Paths</p>
-                                            <p class="card-text">
-                                                <small class="text-muted" id="response">About 749 bytes</small>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="card col-6">
-                                        <img class="card-img-top" src="build/img/placeholder.svg" alt="Card image cap">
-                                        <div class="card-block">
-                                            <h4 class="card-title">Minified</h4>
-                                            <p class="card-text">Imagemin removes some xml markup</p>
-                                            <p class="card-text">
-                                                <small class="text-muted" id="response">298 bytes (saved 451 B - 60.2%)</small>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
+            <main class="col-12 col-sm-9 col-lg-10  nav-adjust">
+                <section class="container imagemin">
+                    <div>
+                        <h1>Self Hosted</h1>
+                        <hr>
+                        <p class="lead">Testing with Browsersync, imagemin &amp; Gulp. Working with local vendor libs concatenated with the browserified bundle into a final all in one built script.</p>
+                        <br/>
+                        <h3>Consumed npm-modules in the browser</h3>
+                        <p>Example: Using the <code>ramda</code> npm module in the client as bundled by browserify</p>
+                        <small class="text-muted blockquote">Squares: <span id="response"></span></small>
                     </div>
-                </div>
+                    <div>
+                        <br/>
+                        <h3>Image Optimisation with <code>gulp-imagemin</code></h3>
+                        <div class="row">
+                            <div class="col-12 col-sm-6">
+                                <div class="card">
+                                <img class="card-img-top" src="app/images/ball.png" alt="Card image cap">
+                                <div class="card-block">
+                                    <h4 class="card-title">Original</h4>
+                                    <p class="card-text">PNG: This Ball has not been minified</p>
+                                    <p class="card-text">
+                                        <small class="text-muted">Its about 204KB</small>
+                                    </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div class="card">
+                                <img class="card-img-top" src="build/img/ball.png" alt="Card image cap">
+                                <div class="card-block">
+                                    <h4 class="card-title">Minified</h4>
+                                    <p class="card-text">This Ball has been minified</p>
+                                    <p class="card-text">
+                                        <small class="text-muted" id="response">175KB (saved 29.3 kB - 14%)</small>
+                                    </p>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="row">
+                            <div class="col-12 col-sm-6">
+                                <div class="card">
+                                <img class="card-img-top" src="app/images/img.svg" alt="Card image cap">
+                                <div class="card-block">
+                                    <h4 class="card-title">Original</h4>
+                                    <p class="card-text">SVG: Untouched SVG with Text</p>
+                                    <p class="card-text">
+                                        <small class="text-muted" id="response">About 529 bytes</small>
+                                    </p>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div class="card">
+                                <img class="card-img-top" src="build/img/img.svg" alt="Card image cap">
+                                <div class="card-block">
+                                    <h4 class="card-title">Minified</h4>
+                                    <p class="card-text">Imagemin removes some xml markup</p>
+                                    <p class="card-text">
+                                        <small class="text-muted" id="response">370 bytes (saved 159 B - 30.1%)</small>
+                                    </p>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="row">
+                            <div class="col-12 col-sm-6">
+                                <div class="card">
+                                    <img class="card-img-top" src="app/images/placeholder.svg" alt="Card image cap">
+                                    <div class="card-block">
+                                        <h4 class="card-title">Original</h4>
+                                        <p class="card-text">SVG: Untouched SVG with more Paths</p>
+                                        <p class="card-text">
+                                            <small class="text-muted" id="response">About 749 bytes</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div class="card">
+                                    <img class="card-img-top" src="build/img/placeholder.svg" alt="Card image cap">
+                                    <div class="card-block">
+                                        <h4 class="card-title">Minified</h4>
+                                        <p class="card-text">Imagemin removes some xml markup</p>
+                                        <p class="card-text">
+                                            <small class="text-muted" id="response">298 bytes (saved 451 B - 60.2%)</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </main>
         </div>
     </div>
