@@ -10,52 +10,6 @@ Note that:
 * If you are only interested in using browserify with just npm scripts, check out the [npm-scripts](https://github.com/Sowed/BrowserifyTuttie/tree/5d955815c43ffc787446c5dbee44aab64628a1f4) branch which is much smaller in size and has less dev dependecies
 * The [gulp-tasks](https://github.com/) branch has examples that only showcase usage of gulp tasks with browserify
 
-
-## npm scripts
-You can create your custom script to perform command line utils. Add a new entry within the script object of package.json and call them with `npm run scriptname`. They are placed in the [scripts](https://github.com/Sowed/BrowserifyTuttie/blob/9a16c8e18af63805358f4326fb0d4355f39933db/package.json#L42) body of [package.json](package.json).
-
-Examples:
-
-```
-npm run setup
-```
-
-This script basically runs an `npm install`, to install the project and dev dependencies, and calls another script `clean` that deletes build directory if present and creates a new one, and another `imagemin` that minifies and optimizes images and copies them to the build directory.
-
-`clean` calls the `rm:build` script that uses [rimraf](https://www.npmjs.com/package/rimraf) to perform a cross platform delete CLI operation on the build directory. 
-
-`clean:js` is a variation of clean that only deletes the js directory in the build with `rm:js`. This saves time in tasks using it, as the already minified images that take time to recreate with `imagemin` are not deleted. 
-
-The `imagemin` script uses [imagemin-cli](https://www.npmjs.com/package/imagemin-cli) which is a CLI utility that wraps around [imagemin](https://www.npmjs.com/package/imagemin) and allows us to minify the images within the npm script as imagemin does with gulp tasks.
-
-```
-npm run bundle
-```
-
-Uses browserify to bundle the `app.js` file with all the `require`d module dependencies into a single file. To extract source maps from the generated   `bundle.js`, it uses the browserify [mapstraction](https://www.npmjs.com/package/mapstraction) plugin
-
-`npm run build` 
-This build task is much similar to the bundle task. In fact it's identical to it, except that on finishing the bundling, it uses [watchify](https://www.npmjs.com/package/watchify) to stay actively watching for changes in the background and rebuilding the bundle.
-
-`npm run build:min` builds a minified bundle. It uses [minifyify](https://www.npmjs.com/package/minifyify) to uglify the bundle and extract out the source maps to a named output directory.
-
-`npm run clean:watch` makes sure that the build and all the code watching starts on a clean slate.
-
-```
-npm run serve
-```
-
-This launches a the project from the index file using [beefy](https://www.npmjs.com/package/beefy). Options supplied instruct beefy to launch the server from the specified app.js scripts on port 8000, open in the default browser and stay live to continue watching and reloading on changes made. 
-
-```
-npm start
-```
-
-This is equivalent to `npm run start`. Npm has some predefined run script pointers like start, stop and test which when defined within the scripts object in package.json, you dont need to provide the run command to execute the.
-* Note that this script just calls the `bundle` then the `serve` scripts
-* The `test` script is not implemented, but just a placeholder message.
-
-
 ## gulp tasks
 Npm scripts are very useful for automating development, tests, and production tasks but with the complexity of the build process the tasks can easily get out of hand. Enter Gulp tasks, much more like npm scripts on steroids. Within the [gulpfile.js](gulpfile.js) are tasks that accomplish fucntionlity that the above npm scripts addressed. Since this file is a javascript file, it allows room for more task manipulation login unlike the limiting JSON bottleneck with npm scripts.
 Gulp tasks are run by `gulp taskname` and if the task is not found within the gulpfile, gulp will throw an error.

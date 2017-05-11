@@ -27,3 +27,7 @@ npm i --save-dev run-sequence
 
 //Add a UNIX command rm -rf for node with rimraf, and a CLI mode for imagemin
 npm install --save-dev rimraf imagemin-cli
+
+//---------------------Takeout npm scripts
+//Remove npm-scripts and dependencies from the package.json specific to those scripts
+npm uninstall --save-dev rimraf imagemin-cli beefy mapstraction minifyify
