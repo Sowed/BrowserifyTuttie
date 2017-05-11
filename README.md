@@ -1,5 +1,4 @@
 # BrowserifyTuttie
----
 
 Just another sample nimbler **Browserify** and **Gulp** task setup with examples. It can use npm scripts or gulp tasks to build a live reloading server with *Beefy* or *Browsersync*, image optimisation with *Imagemin*, scripts uglification, contacting with source maps and task sequencing.
 
@@ -13,7 +12,6 @@ Note that:
 
 
 ## npm scripts
----
 You can create your custom script to perform command line utils. Add a new entry within the script object of package.json and call them with `npm run scriptname`. They are placed in the [scripts](https://github.com/Sowed/BrowserifyTuttie/blob/9a16c8e18af63805358f4326fb0d4355f39933db/package.json#L42) body of [package.json](package.json).
 
 Examples:
@@ -58,8 +56,7 @@ This is equivalent to `npm run start`. Npm has some predefined run script pointe
 * The `test` script is not implemented, but just a placeholder message.
 
 
-# gulp tasks
----
+## gulp tasks
 Npm scripts are very useful for automating development, tests, and production tasks but with the complexity of the build process the tasks can easily get out of hand. Enter Gulp tasks, much more like npm scripts on steroids. Within the [gulpfile.js](gulpfile.js) are tasks that accomplish fucntionlity that the above npm scripts addressed. Since this file is a javascript file, it allows room for more task manipulation login unlike the limiting JSON bottleneck with npm scripts.
 Gulp tasks are run by `gulp taskname` and if the task is not found within the gulpfile, gulp will throw an error.
 * Example 1
@@ -102,6 +99,7 @@ gulp selfhost
 ```
 
 ### List of the gulp tasks
+---
 * [clean](https://github.com/Sowed/BrowserifyTuttie/blob/9a16c8e18af63805358f4326fb0d4355f39933db/gulpfile.js#L97)
 * [imagemin](https://github.com/Sowed/BrowserifyTuttie/blob/9a16c8e18af63805358f4326fb0d4355f39933db/gulpfile.js#L110)
 * [watch-img](https://github.com/Sowed/BrowserifyTuttie/blob/9a16c8e18af63805358f4326fb0d4355f39933db/gulpfile.js#L122)
