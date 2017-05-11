@@ -8,7 +8,7 @@ This is an npm project. To play with it, git clone it to your desired directory 
 Note that: 
 * This master branch has examples of browserify usage with both npm scripts in [package.json](package.json) and gulp tasks in [gulpfile.js](gulpfile.js).
 * If you are only interested in using browserify with just npm scripts, check out the [npm-scripts](https://github.com/Sowed/BrowserifyTuttie/tree/5d955815c43ffc787446c5dbee44aab64628a1f4) branch which is much smaller in size and has less dev dependecies
-* The [gulp-tasks](https://github.com/) branch has examples that only showcase usage of gulp tasks with browserify
+* The [gulp-tasks](https://github.com/Sowed/BrowserifyTuttie/tree/41313cad031aa99998b45332c77b66a326a36d88) branch has examples that only showcase usage of gulp tasks with browserify
 
 
 ## npm scripts
