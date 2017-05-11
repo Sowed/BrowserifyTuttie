@@ -7,7 +7,7 @@ Just another sample nimbler **Browserify** and **Gulp** task setup with examples
 This is an npm project. To play with it, git clone it to your desired directory and run ```npm install``` to install all the project dependencies.
 Note that: 
 * This master branch has examples of browserify usage with both npm scripts in [package.json](package.json) and gulp tasks in [gulpfile.js](gulpfile.js).
-* If you are only interested in using browserify with just npm scripts, check out the [npm-scripts](https://github.com/) branch which is much smaller in size and has less dev dependecies
+* If you are only interested in using browserify with just npm scripts, check out the [npm-scripts](https://github.com/Sowed/BrowserifyTuttie/tree/5d955815c43ffc787446c5dbee44aab64628a1f4) branch which is much smaller in size and has less dev dependecies
 * The [gulp-tasks](https://github.com/) branch has examples that only showcase usage of gulp tasks with browserify
 
 
