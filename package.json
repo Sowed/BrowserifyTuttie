@@ -32,19 +32,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sowed/browserifytuttie"
+    "url": "https://github.com/Sowed/BrowserifyTuttie/tree/6c70c63b436eb961ca3dd0cf633afba4c79ea1da"
   },
   "keywords": [
     "browserify",
     "npm scripts",
-    "gulp",
     "imagemin",
     "watchify",
-    "uglify",
     "sourcemaps",
-    "babel",
     "beefy",
-    "browser-sync",
     "Webpack Alternative",
     "Tutorial"
   ],
